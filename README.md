@@ -36,7 +36,7 @@ A full stack community platform where users can register, create discussions, po
 
 ## Project Structure
 
-\`\`\`
+```
 community-discussion-forum/
 │
 ├── 📁 client/                        ← React frontend
@@ -97,7 +97,7 @@ community-discussion-forum/
 │
 ├── README.md                         ← Project documentation
 └── .gitignore                        ← Ignored files
-\`\`\`
+```
 
 
 
