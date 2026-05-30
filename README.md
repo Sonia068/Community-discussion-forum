@@ -34,60 +34,72 @@ A full stack community platform where users can register, create discussions, po
 
 ## Project Structure
 
+## Project Structure
+
 \`\`\`
 community-discussion-forum/
 │
-├── client/                          React frontend
-│   ├── src/
-│   │   ├── components/
-│   │   │   └── layout/
-│   │   │       └── Navbar.jsx
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx
-│   │   ├── pages/
-│   │   │   ├── Register.jsx
-│   │   │   ├── Login.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── CreateDiscussion.jsx
-│   │   │   ├── DiscussionDetail.jsx
-│   │   │   └── Profile.jsx
-│   │   ├── services/
-│   │   │   ├── api.js
-│   │   │   └── socket.js
-│   │   ├── App.jsx
-│   │   └── main.jsx
+├── 📁 client/                        ← React frontend
+│   ├── 📁 public/
+│   │   └── vite.svg
+│   ├── 📁 src/
+│   │   ├── 📁 components/
+│   │   │   ├── 📁 layout/
+│   │   │   │   └── Navbar.jsx       ← Top navigation bar
+│   │   │   └── 📁 ui/
+│   │   │       ├── Spinner.jsx      ← Reusable loading spinner
+│   │   │       └── Badge.jsx        ← Reusable badge component
+│   │   ├── 📁 context/
+│   │   │   └── AuthContext.jsx      ← Global auth state
+│   │   ├── 📁 pages/
+│   │   │   ├── Register.jsx         ← User registration page
+│   │   │   ├── Login.jsx            ← User login page
+│   │   │   ├── Dashboard.jsx        ← All discussions feed
+│   │   │   ├── CreateDiscussion.jsx ← Create new discussion
+│   │   │   ├── DiscussionDetail.jsx ← Discussion + comments + chat
+│   │   │   └── Profile.jsx          ← User profile page
+│   │   ├── 📁 services/
+│   │   │   ├── api.js               ← Axios instance with token
+│   │   │   └── socket.js            ← Socket.IO client setup
+│   │   ├── App.jsx                  ← Routes and protected routes
+│   │   ├── main.jsx                 ← React entry point
+│   │   └── index.css                ← Tailwind CSS imports
+│   ├── tailwind.config.js
+│   ├── vite.config.js               ← Vite proxy to backend
 │   └── package.json
 │
-├── server/                          Node.js backend
-│   ├── config/
-│   │   └── db.js
-│   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── discussionController.js
-│   │   └── commentController.js
-│   ├── middleware/
-│   │   └── authMiddleware.js
-│   ├── models/
-│   │   ├── User.js
-│   │   ├── Discussion.js
-│   │   ├── Comment.js
-│   │   └── Message.js
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   ├── discussionRoutes.js
-│   │   ├── commentRoutes.js
-│   │   └── messageRoutes.js
-│   ├── sockets/
-│   │   └── chatSocket.js
-│   ├── .env.example
-│   └── index.js
+├── 📁 server/                        ← Node.js backend
+│   ├── 📁 config/
+│   │   └── db.js                    ← MongoDB connection
+│   ├── 📁 controllers/
+│   │   ├── authController.js        ← Register, login, profile
+│   │   ├── discussionController.js  ← Discussion CRUD and votes
+│   │   └── commentController.js     ← Comment CRUD and votes
+│   ├── 📁 middleware/
+│   │   └── authMiddleware.js        ← JWT token verification
+│   ├── 📁 models/
+│   │   ├── User.js                  ← User schema
+│   │   ├── Discussion.js            ← Discussion schema
+│   │   ├── Comment.js               ← Comment schema
+│   │   └── Message.js               ← Chat message schema
+│   ├── 📁 routes/
+│   │   ├── authRoutes.js            ← Auth API routes
+│   │   ├── discussionRoutes.js      ← Discussion API routes
+│   │   ├── commentRoutes.js         ← Comment API routes
+│   │   └── messageRoutes.js         ← Message API routes
+│   ├── 📁 sockets/
+│   │   └── chatSocket.js            ← Socket.IO event handlers
+│   ├── 📁 docs/
+│   │   └── 📁 screenshots/          ← Project screenshots
+│   ├── index.js                     ← Express server entry point
+│   ├── .env.example                 ← Environment variable template
+│   └── package.json
 │
-└── README.md
+├── README.md                         ← Project documentation
+└── .gitignore                        ← Ignored files
 \`\`\`
 
----
 
-## API Endpoints
 
 ### Auth
 | Method | Endpoint | Access | Description |
