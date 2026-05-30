@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket Test</title>
+</head>
+<body>
+
+  <h2>Socket.IO Chat Test</h2>
+
+  <div>
+    <input id="username" placeholder="Your username" value="john_doe" />
+    <input id="roomId" placeholder="Room ID" value="room_test_123" />
+    <button onclick="joinRoom()">Join Room</button>
+  </div>
+
+  <br />
+
+  <div>
+    <input id="messageInput" placeholder="Type a message" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <br />
+
+  <div id="typingIndicator" style="color: gray; font-style: italic;"></div>
+
+  <div id="onlineUsers" style="color: green;"></div>
+
+  <div id="messages" style="border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; margin-top: 10px;"></div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://localhost:5000");
+
+    function joinRoom() {
+      const username = document.getElementById("username").value;
+      const roomId = document.getElementById("roomId").value;
+
+      socket.emit("joinRoom", {
+        roomId: roomId,
+        userId: "user_" + Math.random().toString(36).substr(2, 9),
+        username: username,
+        avatar: ""
+      });
+    }
+
+    function sendMessage() {
+      const text = document.getElementById("messageInput").value;
+      const username = document.getElementById("username").value;
+      const roomId = document.getElementById("roomId").value;
+
+      socket.emit("sendMessage", {
+        roomId: roomId,
+        text: text,
+        userId: "user_test",
+        username: username,
+        avatar: ""
+      });
+
+      document.getElementById("messageInput").value = "";
+    }
+
+    // show typing indicator when user types
+    document.getElementById("messageInput").addEventListener("input", () => {
+      const roomId = document.getElementById("roomId").value;
+      const username = document.getElementById("username").value;
+      socket.emit("typing", { roomId, username });
+
+      setTimeout(() => {
+        socket.emit("stopTyping", { roomId });
+      }, 2000);
+    });
+
+    socket.on("previousMessages", (messages) => {
+      const div = document.getElementById("messages");
+      messages.forEach((msg) => {
+        div.innerHTML += "<p><b>" + msg.senderName + ":</b> " + msg.text + "</p>";
+      });
+    });
+
+    socket.on("newMessage", (msg) => {
+      const div = document.getElementById("messages");
+      div.innerHTML += "<p><b>" + msg.senderName + ":</b> " + msg.text + "</p>";
+      div.scrollTop = div.scrollHeight;
+    });
+
+    socket.on("userTyping", (data) => {
+      document.getElementById("typingIndicator").innerText = data.username + " is typing...";
+    });
+
+    socket.on("userStopTyping", () => {
+      document.getElementById("typingIndicator").innerText = "";
+    });
+
+    socket.on("onlineUsers", (users) => {
+      const names = users.map((u) => u.username).join(", ");
+      document.getElementById("onlineUsers").innerText = "Online: " + names;
+    });
+
+    socket.on("userJoined", (data) => {
+      const div = document.getElementById("messages");
+      div.innerHTML += "<p style='color:green'>" + data.message + "</p>";
+    });
+
+    socket.on("userLeft", (data) => {
+      const div = document.getElementById("messages");
+      div.innerHTML += "<p style='color:red'>" + data.message + "</p>";
+    });
+  </script>
+
+</body>
+</html>
